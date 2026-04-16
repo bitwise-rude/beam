@@ -34,6 +34,7 @@ while True:
 
     # first request
     if request.startswith("GET / HTTP/1.1"):
+        print("GOT A BROWSER.. STARTING TO SEND..")
         response = f'HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Length: {len(index_content)}\r\n\r\n{index_content}\r\n'
 
         conn.send(response.encode())
@@ -50,19 +51,14 @@ while True:
         except ValueError:
             range_end = range_start + 999999
             range_end = range_end+1 if range_end < video_data_len else video_data_len
-        print(range_start,range_end)
 
         response = f'HTTP/1.1 206 Partial Content\r\nContent-Type: video/mp4\r\nAccept-Ranges: bytes\r\nContent-Range: bytes {range_start}-{range_end-1}/{video_data_len}\r\nContent-Length: {range_end-range_start}\r\n\r\n'.encode()
         try:
             response += video_data[range_start:range_end]
-            snet = len(video_data[range_start:range_end])
         except IndexError:
-            snet = len(vidoe_data[range_start:])
             response += video_data[range_start:]
 
         conn.send(response)
-        print(response[0:150])
-        print(snet," is sent")
 
         conn.close()
 
