@@ -1,8 +1,11 @@
+#!/bin/python3
+
 import sys, socket
 
 # CONSTANTS ---
 PORT = 8080
 IP = "0.0.0.0"
+CHUNK_SIZE = 999999
 
 def process_arguments() -> bytes:
     if(len(sys.argv) < 2):
@@ -42,14 +45,13 @@ while True:
 
     # request for the video (not the first but could be any)
     elif request.startswith("GET /sample.mp4"):
-        print(request)
         range_start, range_end, *_ = request.split("Range: ")[1][6:].split("-")
         # if range_end == "\r\nConnection: keep": range_end = video_data_len 
         range_start = int(range_start)
         try:
             range_end = int(range_end)
         except ValueError:
-            range_end = range_start + 999999
+            range_end = range_start + CHUNK_SIZE
             range_end = range_end+1 if range_end < video_data_len else video_data_len
 
         response = f'HTTP/1.1 206 Partial Content\r\nContent-Type: video/mp4\r\nAccept-Ranges: bytes\r\nContent-Range: bytes {range_start}-{range_end-1}/{video_data_len}\r\nContent-Length: {range_end-range_start}\r\n\r\n'.encode()
@@ -59,7 +61,6 @@ while True:
             response += video_data[range_start:]
 
         conn.send(response)
-
         conn.close()
 
 
