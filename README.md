@@ -1,7 +1,7 @@
 # Beam 
-Want to share large videos with your friends without them having to download?
+Do you want to share large videos with your friends without them having to download?
 
-Say 'Hello' to Beam...
+Welcome Beam ! 
 
 Beam is a simple standalone python script that allows the script runner to stream a video file over the local network, allowing multiple people to view the video instantly through their browser without having to download the video in their machine. 
 
@@ -22,6 +22,8 @@ After this, go to the link `<your_computer_ip>:8080` on your friend's browser.
 
 > To view your IP, you can use `ipconfig` on command line on windows and `ip addr` on terminal on linux
 
+![some screenshot](files/image.png)
+
 ***
 
 # Others
@@ -30,6 +32,8 @@ A sample `sample.mp4` file is provided with the source code.
 Keep in mind that this is some 30 minutes thing made for the purpose of using it instantly so it just does video for now, i have tested with a 2 hour long video with 5 different browsers running simulatenously and it works without dropping a sweat
 
 I have tested this in chrome and firefox. It used to fail on chrome but now it works on chrome too.
+
+Something that I have noticed is that if you close the server, it is expected that the streaming will stop and your video will try to load on both of the browser and halt. If you run the server again without refreshing the browser chrome will continue playing (meaning it will continue request the server and check if it is back on or not). On the other hand, firefox will give up really quickly and video won't continue. This might be happening only on my device or my version of firefox ESR but idunno.
 
 # License 
 Copyright (c) [2026] [Meyan Adhikari]
